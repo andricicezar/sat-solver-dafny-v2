@@ -320,7 +320,7 @@ class Formula extends DataStructures {
 
     ghost var previousTau := truthAssignment[..];
     truthAssignment[variable] := -1;
-    ghost var newTau := truthAssignment[..]; //[variable as int := -1];
+    ghost var newTau := truthAssignment[..]; 
     assert forall i :: 0 <= i < decisionLevel ==>
       traceDLEnd[i] == old(traceDLEnd[i]) && traceDLStart[i] == old(traceDLStart[i]);
     assert traceVariable[..traceDLEnd[decisionLevel]] == old(traceVariable[..traceDLEnd[decisionLevel]-1]);
@@ -522,7 +522,6 @@ class Formula extends DataStructures {
 
     assert validTrueLiteralsCount(truthAssignment[..]);
 
-    /* toate clauzele care au negatia variabilei*/
     var i' : Int32.t := 0;
 
     var impactedClausesLen' : Int32.t := |impactedClauses'| as Int32.t;
@@ -689,7 +688,6 @@ class Formula extends DataStructures {
     requires validVariablesCount();
     requires validAssignmentTrace();
     requires 0 <= i < j <= decisionLevel;
-    /* requires traceDLStart[decisionLevel] < traceDLEnd[decisionLevel];*/
 
     ensures traceDLStart[i] < traceDLStart[j];
     decreases decisionLevel - i;
@@ -773,13 +771,10 @@ class Formula extends DataStructures {
     requires validVariablesCount();
     requires validAssignmentTrace()
     requires -1 <= dL <= decisionLevel;
-    /* requires forall j :: j in assignmentsTrace ==>*/
-    /*   0 <= j.0 < variablesCount;*/
     requires traceVariable.Length == variablesCount as int;
     ensures getDecisionLevel(dL) <= assignmentsTrace;
   {
     if dL == -1 then {}
-    // traceVariable[x] este variabila setata pe pozitia x
     else (set j | j in assignmentsTrace && j.0 in traceVariable[traceDLStart[dL]..traceDLEnd[dL]])
   }
 
@@ -1074,7 +1069,6 @@ class Formula extends DataStructures {
       cI := cI + 1;
     }
 
-    /* print "Decision literal ", -result, "\n";*/
     return -result;
   }
 
@@ -1462,45 +1456,6 @@ class Formula extends DataStructures {
     maybeClause_existUnsetLiteralInClause(clauseIndex);
   }
 
-/*   method render(truthAssignment : seq<Int32.t>) */
-/*     requires valid();*/
-/*     requires validValuesTruthAssignment(truthAssignment);*/
-/*     requires |truthAssignment| == variablesCount as int;*/
-/*   {*/
-/*     var clauseIndex := 0;*/
-/*     print "Solution:\n", truthAssignment, "\n\nClauses:\n";*/
-
-/*     while (clauseIndex < |clauses|) */
-/*         invariant 0 <= clauseIndex <= |clauses|;*/
-/*         decreases |clauses| - clauseIndex;*/
-/*     {*/
-/*         var clause := clauses[clauseIndex];*/
-/*         assert validClause(clause);*/
-
-/*         var literalIndex := 0;*/
-/*         while (literalIndex < |clause|) */
-/*             decreases |clause| - literalIndex;*/
-/*         {*/
-/*             var literal := clause[literalIndex];*/
-/*             assert validLiteral(literal);*/
-
-/*             print literal;*/
-
-/*             assert 0 <= Utils.abs(literal)-1 < variablesCount;*/
-/*             if (literal < 0 && truthAssignment[-literal-1] == 0) {*/
-/*               print '*';*/
-/*             } else if (literal > 0 && truthAssignment[literal-1] == 1) {*/
-/*               print '*';*/
-/*             }*/
-                
-/*             print ' ';*/
-/*             literalIndex := literalIndex + 1;*/
-/*         }*/
-/*         print '\n';*/
-/*         clauseIndex := clauseIndex+1;*/
-/*     }*/
-/*   }*/
-
   lemma hasEmptyClause_notSatisfiable()
     requires valid();
     requires hasEmptyClause();
@@ -1624,7 +1579,7 @@ class Formula extends DataStructures {
     requires validClause(clauses[clauseIndex]);
     requires validLiteral(literal);
 
-    // is unit
+    // the clause is unit
     requires falseLiteralsCount[clauseIndex] as int + 1 == |clauses[clauseIndex]|;
     requires literal in clauses[clauseIndex];
     requires getLiteralValue(truthAssignment, literal) == -1;

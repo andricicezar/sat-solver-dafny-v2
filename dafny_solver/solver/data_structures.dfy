@@ -435,11 +435,9 @@ trait DataStructures {
 
     Utils.orderedAsc(s) &&
 
-    // toate clausele care apar in array contin variabila
     (forall clauseIndex :: clauseIndex in s ==>
       variable+1 in clauses[clauseIndex]) &&
 
-    // clauzele care nu apar in array, nu contin variabila
     (forall clauseIndex :: 0 <= clauseIndex as int < |clauses| && clauseIndex !in s ==>
       variable+1 !in clauses[clauseIndex])
   }
@@ -472,11 +470,9 @@ trait DataStructures {
 
     Utils.orderedAsc(s) &&
 
-    // toate clausele care apar in array contin variabila
     (forall clauseIndex :: clauseIndex in s ==>
       -variable-1 in clauses[clauseIndex]) &&
 
-    // clauzele care nu apar in array, nu contin variabila
     (forall clauseIndex : Int32.t :: 0 <= clauseIndex as int < |clauses| && 
                                      clauseIndex !in s ==>
       -variable-1 !in clauses[clauseIndex])

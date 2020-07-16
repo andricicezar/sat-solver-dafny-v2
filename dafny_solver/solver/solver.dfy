@@ -55,8 +55,6 @@ class SATSolver {
   {
     formula.increaseDecisionLevel();
     formula.setLiteral(literal, value);
-    /* assert formula.countUnsetVariables(formula.truthAssignment[..]) < */
-    /*   old(formula.countUnsetVariables(formula.truthAssignment[..]));*/
     result := solve();
     formula.revertLastDecisionLevel();
 
@@ -135,23 +133,4 @@ class SATSolver {
 
     return result;
   }
-
-  /* method renderStep() {*/
-  /*   var i : Int32.t := 0;*/
-  /*   while (i < formula.stack.size) */
-  /*     invariant 0 <= i <= formula.stack.size;*/
-  /*   {*/
-  /*     print "| ";*/
-  /*     var j : Int32.t := 0;*/
-  /*     var layer := formula.stack.ghostContainer[i];*/
-  /*     while (j as int < |layer|) */
-  /*       invariant 0 <= j as int <= |layer|;*/
-  /*     {*/
-  /*       print layer[j].0 + 1, "=", layer[j].1, ", ";*/
-  /*       j := j + 1;*/
-  /*     }*/
-  /*     i := i + 1;*/
-  /*   }*/
-  /*   print "\n";*/
-  /* }*/
 }
